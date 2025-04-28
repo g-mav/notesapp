@@ -1,0 +1,257 @@
+/* Global Styles */
+:root {
+  --primary-color: #4a90e2;
+  --secondary-color: #50c878;
+  --dark-color: #2c3e50;
+  --light-color: #f8f9fa;
+}
+
+body {
+  background-color: #f5f5f5;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Gradient Backgrounds */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--primary-color), #357abd);
+}
+
+.bg-gradient-success {
+  background: linear-gradient(135deg, var(--secondary-color), #3da35d);
+}
+
+/* Chat Window Styles */
+.chat-bubble {
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-message {
+  background-color: var(--primary-color);
+  color: white;
+  margin-left: auto;
+  max-width: 80%;
+}
+
+.system-message {
+  background-color: white;
+  color: var(--dark-color);
+  margin-right: auto;
+  max-width: 80%;
+  border: 1px solid #e9ecef;
+}
+
+/* Notes Display Styles */
+.note-card {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.note-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.note-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+  text-transform: capitalize;
+}
+
+.note-content {
+  color: #666;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.note-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.search-box {
+  margin-bottom: 20px;
+}
+
+.search-box .form-control {
+  border-radius: 20px;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+}
+
+.search-box .input-group-text {
+  border-radius: 20px 0 0 20px;
+  background-color: white;
+  border-right: none;
+}
+
+.search-box .form-control:focus {
+  box-shadow: none;
+  border-color: #4a90e2;
+}
+
+/* Speech-to-Text Styles */
+.microphone-btn {
+  transition: all 0.3s ease;
+}
+
+.microphone-btn:hover {
+  transform: scale(1.05);
+}
+
+.pulse-icon {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.recording-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pulsating-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #ff4444;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+.waveform {
+  display: flex;
+  gap: 3px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(5px);
+  position: relative;
+  overflow: hidden;
+}
+
+.wave {
+  width: 3px;
+  height: 100%;
+  background: var(--primary-color);
+  border-radius: 3px;
+  animation: wave 1.2s infinite ease-in-out;
+  transform-origin: bottom;
+}
+
+.wave:nth-child(1) { animation-delay: 0.1s; height: 20%; }
+.wave:nth-child(2) { animation-delay: 0.2s; height: 40%; }
+.wave:nth-child(3) { animation-delay: 0.3s; height: 60%; }
+.wave:nth-child(4) { animation-delay: 0.4s; height: 80%; }
+.wave:nth-child(5) { animation-delay: 0.5s; height: 100%; }
+.wave:nth-child(6) { animation-delay: 0.6s; height: 80%; }
+.wave:nth-child(7) { animation-delay: 0.7s; height: 60%; }
+.wave:nth-child(8) { animation-delay: 0.8s; height: 40%; }
+.wave:nth-child(9) { animation-delay: 0.9s; height: 20%; }
+.wave:nth-child(10) { animation-delay: 1s; height: 40%; }
+
+@keyframes wave {
+  0%, 100% {
+    transform: scaleY(0.3);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+/* Add a subtle gradient overlay */
+.waveform::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    rgba(255,255,255,0.1) 0%, 
+    rgba(255,255,255,0) 50%, 
+    rgba(255,255,255,0.1) 100%);
+  pointer-events: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .chat-bubble {
+    max-width: 90%;
+  }
+  
+  .note-card {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Animation Classes */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Button Styles */
+.btn-rounded {
+  border-radius: 50px;
+}
+
+/* Card Styles */
+.shadow-lg {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
