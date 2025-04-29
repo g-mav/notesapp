@@ -1,11 +1,13 @@
 // App.jsx
 import { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { Container } from "react-bootstrap";
 import ChatWindow from "./Components/ChatWindow";
 import NotesDisplay from "./Components/NotesDisplay";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import Login from "./Components/Login";
+import LandingPage from "./Components/LandingPage";
 import { auth } from "./firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import "./App.css";
@@ -51,33 +53,47 @@ function App() {
     return <div>Loading...</div>;
   }
 
-  if (!user) {
-    return <Login onLogin={setUser} />;
-  }
-
   return (
-    <div className="d-flex flex-column min-vh-100">
-      <Header user={user} />
-      <Container className="flex-grow-1 py-4">
-        <Row className="g-4">
-          <Col lg={6}>
-            <ChatWindow
-              messages={messages}
-              setMessages={setMessages}
-              addNote={addNote}
-            />
-          </Col>
-          <Col lg={6}>
-            <NotesDisplay
-              notes={notes}
-              deleteNote={deleteNote}
-              updateNote={updateNote}
-            />
-          </Col>
-        </Row>
-      </Container>
-      <Footer />
-    </div>
+    <Router>
+      <Routes>
+        {/* Public routes */}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={!user ? <Login onLogin={setUser} /> : <Navigate to="/app" />} />
+        
+        {/* Protected routes */}
+        <Route
+          path="/app"
+          element={
+            user ? (
+              <div className="d-flex flex-column min-vh-100">
+                <Header user={user} />
+                <Container className="flex-grow-1 py-4">
+                  <div className="row g-4">
+                    <div className="col-lg-6">
+                      <ChatWindow
+                        messages={messages}
+                        setMessages={setMessages}
+                        addNote={addNote}
+                      />
+                    </div>
+                    <div className="col-lg-6">
+                      <NotesDisplay
+                        notes={notes}
+                        deleteNote={deleteNote}
+                        updateNote={updateNote}
+                      />
+                    </div>
+                  </div>
+                </Container>
+                <Footer />
+              </div>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 
