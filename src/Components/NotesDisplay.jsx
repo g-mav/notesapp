@@ -82,55 +82,55 @@ export default function NotesDisplay({ notes, deleteNote, updateNote }) {
 
   return (
     <>
-      <Card className="h-100 border-0 shadow-lg">
-        <Card.Header className="bg-gradient-success text-white d-flex justify-content-between align-items-center py-3">
+      <Card className="h-100 border-0 shadow-lg bg-dark text-white">
+        <Card.Header className="bg-dark border-bottom border-secondary d-flex justify-content-between align-items-center py-3">
           <div className="d-flex align-items-center">
-            <FaStickyNote className="me-2" />
+            <FaStickyNote className="me-2 text-primary" />
             <h5 className="mb-0">Saved Notes</h5>
           </div>
-          <Badge bg="light" text="success" className="px-3 py-2">
+          <Badge bg="secondary" text="white" className="px-3 py-2">
             {filteredAndSortedNotes.length} Notes
           </Badge>
         </Card.Header>
-        <Card.Body className="overflow-auto p-3 bg-light">
+        <Card.Body className="overflow-auto p-3 bg-dark">
           <div className="d-flex gap-2 mb-3">
             <div className="input-group">
-              <span className="input-group-text bg-white">
-                <FaSearch />
+              <span className="input-group-text bg-dark border-secondary">
+                <FaSearch className="text-white" />
               </span>
               <Form.Control
                 type="text"
                 placeholder="Search notes by title..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="border-start-0"
+                className="border-start-0 bg-dark text-white border-secondary"
               />
             </div>
             <Dropdown>
-              <Dropdown.Toggle variant="light" size="sm" className="d-flex align-items-center">
+              <Dropdown.Toggle variant="dark" size="sm" className="d-flex align-items-center border-secondary">
                 <FaFilter className="me-1" /> Filter
               </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={() => setFilter("all")}>
+              <Dropdown.Menu className="bg-dark border-secondary">
+                <Dropdown.Item onClick={() => setFilter("all")} className="text-white">
                   <FaStickyNote className="me-2" /> All Notes
                 </Dropdown.Item>
-                <Dropdown.Item onClick={() => setFilter("today")}>
+                <Dropdown.Item onClick={() => setFilter("today")} className="text-white">
                   <FaCalendarAlt className="me-2" /> Today
                 </Dropdown.Item>
-                <Dropdown.Item onClick={() => setFilter("week")}>
+                <Dropdown.Item onClick={() => setFilter("week")} className="text-white">
                   <FaCalendarAlt className="me-2" /> Last 7 Days
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             <Dropdown>
-              <Dropdown.Toggle variant="light" size="sm" className="d-flex align-items-center">
+              <Dropdown.Toggle variant="dark" size="sm" className="d-flex align-items-center border-secondary">
                 <FaSort className="me-1" /> Sort
               </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={() => setSortBy("newest")}>
+              <Dropdown.Menu className="bg-dark border-secondary">
+                <Dropdown.Item onClick={() => setSortBy("newest")} className="text-white">
                   Newest First
                 </Dropdown.Item>
-                <Dropdown.Item onClick={() => setSortBy("oldest")}>
+                <Dropdown.Item onClick={() => setSortBy("oldest")} className="text-white">
                   Oldest First
                 </Dropdown.Item>
               </Dropdown.Menu>
@@ -139,7 +139,6 @@ export default function NotesDisplay({ notes, deleteNote, updateNote }) {
 
           {filteredAndSortedNotes.length === 0 ? (
             <div className="text-center text-muted py-5">
-              <div className="display-1 mb-3">📝</div>
               <h6>No notes found</h6>
               <small>Try adjusting your filters or search term</small>
             </div>
@@ -147,7 +146,7 @@ export default function NotesDisplay({ notes, deleteNote, updateNote }) {
             <div className="row g-3">
               {filteredAndSortedNotes.map((note) => (
                 <div key={note.id} className="col-md-6">
-                  <div className="note-card bg-white p-3 rounded shadow-sm h-100">
+                  <div className="note-card bg-dark p-3 rounded shadow-sm h-100 border border-secondary">
                     <div className="d-flex align-items-center gap-2 mb-2 text-muted small">
                       <FaStickyNote />
                       <span>{new Date(note.timestamp).toLocaleDateString()}</span>
@@ -155,38 +154,40 @@ export default function NotesDisplay({ notes, deleteNote, updateNote }) {
                         <FaClock className="me-1" />
                         {new Date(note.timestamp).toLocaleTimeString()}
                       </span>
+                      <Dropdown>
+                        <Dropdown.Toggle 
+                          variant="link" 
+                          className="text-white p-0 ms-2"
+                          id={`dropdown-note-${note.id}`}
+                          style={{ fontSize: '1.2rem' }}
+                        />
+                        <Dropdown.Menu className="bg-dark border-secondary">
+                          <Dropdown.Item 
+                            className="text-white"
+                            onClick={() => {
+                              setEditNote(note);
+                              setEditedContent(note.content);
+                            }}
+                          >
+                            <FaEdit className="me-2" /> Edit
+                          </Dropdown.Item>
+                          <Dropdown.Item 
+                            className="text-white"
+                            onClick={() => confirmDelete(note)}
+                          >
+                            <FaTrash className="me-2" /> Delete
+                          </Dropdown.Item>
+                          <Dropdown.Item 
+                            className="text-white"
+                            onClick={() => handleShare(note)}
+                          >
+                            <FaShare className="me-2" /> Share
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
                     </div>
-                    <h6 className="note-title mb-2">{note.title || "Untitled Note"}</h6>
-                    <div className="mb-3 note-content">{note.content}</div>
-                    <div className="d-flex gap-2 justify-content-end">
-                      <Button
-                        variant="outline-info"
-                        size="sm"
-                        onClick={() => {
-                          setEditNote(note);
-                          setEditedContent(note.content);
-                        }}
-                        className="rounded-pill"
-                      >
-                        <FaEdit />
-                      </Button>
-                      <Button
-                        variant="outline-danger"
-                        size="sm"
-                        onClick={() => confirmDelete(note)}
-                        className="rounded-pill"
-                      >
-                        <FaTrash />
-                      </Button>
-                      <Button
-                        variant="outline-success"
-                        size="sm"
-                        onClick={() => handleShare(note)}
-                        className="rounded-pill"
-                      >
-                        <FaShare />
-                      </Button>
-                    </div>
+                    <h6 className="note-title mb-2 text-white">{note.title || "Untitled Note"}</h6>
+                    <div className="mb-3 note-content text-white-50">{note.content}</div>
                   </div>
                 </div>
               ))}
@@ -196,10 +197,10 @@ export default function NotesDisplay({ notes, deleteNote, updateNote }) {
       </Card>
 
       <Modal show={!!editNote} onHide={() => setEditNote(null)} centered>
-        <Modal.Header closeButton className="bg-light">
+        <Modal.Header closeButton className="bg-dark text-white">
           <Modal.Title>Edit Note</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="bg-dark text-white">
           <Form.Group className="mb-3">
             <Form.Label>Title</Form.Label>
             <Form.Control
@@ -207,6 +208,7 @@ export default function NotesDisplay({ notes, deleteNote, updateNote }) {
               placeholder="Enter note title"
               value={editNote?.title || ""}
               onChange={(e) => setEditNote({ ...editNote, title: e.target.value })}
+              className="bg-dark text-white border-secondary"
             />
           </Form.Group>
           <Form.Group>
@@ -216,10 +218,11 @@ export default function NotesDisplay({ notes, deleteNote, updateNote }) {
               rows={5}
               value={editedContent}
               onChange={(e) => setEditedContent(e.target.value)}
+              className="bg-dark text-white border-secondary"
             />
           </Form.Group>
         </Modal.Body>
-        <Modal.Footer className="bg-light">
+        <Modal.Footer className="bg-dark text-white">
           <Button variant="secondary" onClick={() => setEditNote(null)}>
             Cancel
           </Button>
@@ -230,13 +233,13 @@ export default function NotesDisplay({ notes, deleteNote, updateNote }) {
       </Modal>
 
       <Modal show={showDeleteConfirm} onHide={() => setShowDeleteConfirm(false)} centered>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className="bg-dark text-white">
           <Modal.Title>Confirm Delete</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="bg-dark text-white">
           Are you sure you want to delete this note? This action cannot be undone.
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer className="bg-dark text-white">
           <Button variant="secondary" onClick={() => setShowDeleteConfirm(false)}>
             Cancel
           </Button>
